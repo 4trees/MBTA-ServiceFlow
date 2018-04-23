@@ -1,0 +1,123 @@
+html {
+    font-family: 'Montserrat', sans-serif;
+}
+
+html,
+body,
+#maps {
+    width: 100%;
+    margin: 0;
+    height: 100%;
+    background: #000;
+}
+
+canvas {
+    pointer-events: none;
+}
+
+.intro {
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 50%;
+    transform: translate(50%, 0);
+    transition: all 1s;
+    transform: translate(50%, 0);
+}
+
+.intro-content,
+.intro-title {
+    padding: 0 20px;
+    color: #e7e7e7;
+    display: block;
+}
+
+.intro-content {
+    font-size: .7em;
+    line-height: 160%;
+}
+
+.intro-title {
+    font-size: 1em;
+}
+
+.intro.collapse {
+    top: 0;
+    text-align: left;
+    left: 0;
+    transform: translate(0, 0);
+}
+
+.intro.collapse>.intro-content {
+    opacity: 0
+}
+
+.custom-tooltip {
+    position: absolute;
+    max-width: 200px;
+    min-width: 100px;
+    padding: 6px 15px;
+    background: rgba(46, 45, 45, 0.7);
+    box-shadow: 1px 1px 1px 0px rgba(193, 191, 191, 0.4);
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 1000;
+    color: #fff;
+    border: 1px solid #191919;
+}
+
+.custom-tooltip p {
+    font-size: .75em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.custom-tooltip .route {
+    font-size: .65em;
+}
+
+.custom-tooltip span {
+    margin-right: 5px;
+}
+
+#clock {
+    position: absolute;
+    z-index: 800;
+    right: 10px;
+    top: 15px;
+    color: #999;
+    padding: 0 8px;
+    font-size: 15px;
+}
+
+#clock div {
+    float: left;
+}
+
+#clock .button {
+    margin-top: 2px;
+    margin-left: 5px;
+    background: transparent;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 0;
+    height: 0;
+    border-color: transparent transparent transparent #787878;
+    transition: 100ms all ease;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 8px 0 8px 12px;
+}
+
+#clock .button.paused {
+    height: 14px;
+    border-style: double;
+    border-width: 0px 0 0px 8px;
+}
+
+#clock .button:hover {
+    border-color: transparent transparent transparent #d5d5d5;
+}
