@@ -212,6 +212,7 @@ function Animation(_) {
             .append('g')
             .attr('id', d => d.key)
             .attr('class', 'station')
+            .attr('transform',`translate(${_w/2},${_h/2})`)
             .on('mouseover', d => {
 
                 _dispatch.call('selection:station', null, d, stoproute_lookup, stop_lookup)
@@ -220,29 +221,39 @@ function Animation(_) {
                 _dispatch.call('unselection:station', null)
             })
         stationEnter.append('circle').attr('class', 'shadow')
-            .attr('r', d => (d.color.length * 1.5 + 3) * scale_r)
+            .attr('r', d => (d.color.length * 1.5 + 4) * scale_r)
             .style('opacity', 0)
 
         stationEnter.selectAll('.node').data(d => d.color)
             .enter()
             .append('circle').attr('class', 'node')
-            .attr('r', 0)
-            .style('stroke', d => `#${d}`)
+            .attr('r', .5)
+            .style('stroke', '#999')
             .style('fill', 'none')
             .style('stroke-width', 1.5)
-            .transition().duration(1000)
-            .attr('r', (d, i) => (2 + i * 1.5) * scale_r)
+
 
         stationEnter.merge(stationNodes)
+            .transition().duration(2500)
             .attr('transform', d => {
                 const [x, y] = projection([d.stop_lon, d.stop_lat])
                 return `translate(${x},${y})`
             })
+            .selectAll('.node')
+            .transition().duration(4000)
+            .style('stroke', d => `#${d}`)
+            .attr('r', (d, i) => (3 + i * 1.5) * scale_r)
 
 
         d3.select('.intro').classed('collapse', true)
         initial()
-        renderFrame()
+
+        setTimeout(() => {
+
+            renderFrame()
+
+        }, 8000);
+
 
     }
 
@@ -268,8 +279,8 @@ function Animation(_) {
                 const [x, y] = projection([d.stop_lon, d.stop_lat])
                 return `translate(${x},${y})`
             })
-        stations.selectAll('.shadow').attr('r', d => (d.color.length * 1.5 + 3) * scale_r)
-        stations.selectAll('.node').attr('r', (d, i) => (2 + i * 1.5) * scale_r)
+        stations.selectAll('.shadow').attr('r', d => (d.color.length * 1.5 + 4) * scale_r)
+        stations.selectAll('.node').attr('r', (d, i) => (3 + i * 1.5) * scale_r)
 
         renderFrame()
 
@@ -315,34 +326,35 @@ function Animation(_) {
 
             const current = trip.current
             if (current) {
+
                 const t = +current.key
                 const next = trip.next
+
+
 
                 if (t <= _t) {
 
                     _clock = current.values[0].arrival_clock
                     //draw current
                     current.values.forEach(d => {
-                        const bikePath2D = new Path2D()
+                        const carPath2D = new Path2D()
                         const radius = d.route_type != 3 ? 3 : 1.5
-                        //const pct = (_t - t0) / (t - t0)
 
-                        //opacity = pct == 1 ? opacity : .5
-                        let opacity = routeFilter ? (routeFilter.includes(d.route_id) ? 1 : .02) : 1  
-                        //x * pct, y * pct                      
+                        const opacity = routeFilter ? (routeFilter.includes(d.route_id) ? 1 : .02) : 1
+
                         const [x, y] = projection([d.stop_lon, d.stop_lat]);
-                        
-                        
-                        bikePath2D.moveTo(x, y)
-                        bikePath2D.arc(x, y, radius * scale_r, 0, Math.PI * 2)
+
+                        carPath2D.moveTo(x, y)
+                        carPath2D.arc(x, y, radius * scale_r, 0, Math.PI * 2)
 
                         ctx.globalAlpha = opacity;
                         ctx.fillStyle = `#${d.route_color}`;
-                        ctx.fill(bikePath2D)
+                        ctx.fill(carPath2D)
 
                     })
 
                     if (t < _t) {
+
                         //update current
                         trip.current = trip.next
                         if (next) {
